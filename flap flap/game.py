@@ -37,7 +37,6 @@ pass_pipe = False
 bg = pygame.image.load('img/background1.jpeg')
 lantai = pygame.image.load('img/ground.png')
 tombol_restart = pygame.image.load('img/restart.png')
-play_button = pygame.image.load('img/play.png').convert_alpha()
 
 #text di layar
 def draw_text(text, font, text_col, x, y):
@@ -217,7 +216,7 @@ while run:
 
         #check game over dan ulang
         if game_over == True:
-            if button.draw(screen) == True:
+            if button.draw() == True:
                 game_over = False
                 score = reset_game()
 
