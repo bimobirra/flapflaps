@@ -2,6 +2,7 @@
 import pygame
 from pygame.locals import *
 import random
+import os
 
 pygame.init()
 
@@ -17,6 +18,7 @@ pygame.display.set_caption(('Flap Flap'))
 
 #font
 font = pygame.font.SysFont('Bauhaus 93', 60)
+font2 = pygame.font.SysFont('Comic Sans', 35)
 
 #warna font
 white = (255,255,255)
@@ -32,11 +34,20 @@ last_pipe = pygame.time.get_ticks() - pipe_freq
 score = 0
 pass_pipe = False
 
+if os.path.exists('score.txt'):
+    with open('score.txt', 'r') as file:
+        high_score = int(file.read())
+else:
+    high_score = 0
+
 
 #aset
 bg = pygame.image.load('img/background1.jpeg')
 lantai = pygame.image.load('img/ground.png')
 tombol_restart = pygame.image.load('img/restart.png')
+back_mati = pygame.image.load('img/back.png')
+
+
 
 #text di layar
 def draw_text(text, font, text_col, x, y):
@@ -153,13 +164,12 @@ flap = Bird(100, int(screen_height/2))
 
 bird_group.add(flap)
 
-#tombol restart
+#posisi tombol
 button =  Button(screen_widht//2 - 50, screen_height // 2 - 100, tombol_restart)
 
 run = True
 while run:
-
-
+    
         jam.tick(fps)
 
         screen.blit(bg, (0,0))
@@ -216,6 +226,13 @@ while run:
 
         #check game over dan ulang
         if game_over == True:
+            #update high score
+            if score > high_score:
+                high_score = score
+                with open('score.txt', 'w') as file:
+                    file.write(str(high_score))
+                    #nambahin teks highscore(untuk ubah ganti yg int)
+            draw_text('highscore :' + str(high_score), font2, white, int(screen_widht/2 - 100), int(screen_height/2 - 150))
             if button.draw() == True:
                 game_over = False
                 score = reset_game()
